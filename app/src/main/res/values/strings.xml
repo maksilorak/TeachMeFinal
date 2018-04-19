@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ProyectoFinal</string>
+    <string name="hint_correo">Email</string>
+    <string name="hint_contrasena">Password</string>
+    <string name="btnIniciarSesion">SIGN IN</string>
+    <string name="btnCrearCuenta">CREATE ACCOUNT</string>
+    <string name="btnCerrarSesion">LOG OUT</string>
+
+
+
+    <string name="facebook_app_id">171549470169865</string>
+    <string name="fb_login_protocol_scheme">fb171549470169865</string>
+    <string name="txtCreateAccount">REGISTER A NEW ACCOUNT</string>
+    <string name="hint_fullname">Full Name</string>
+    <string name="txtRegister">Register</string>
+    <string name="txtNoAccount">No account yet? Create one</string>
+    <string name="hint_phone">Phone</string>
+
+</resources>
