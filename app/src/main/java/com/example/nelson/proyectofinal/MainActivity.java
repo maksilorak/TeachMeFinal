@@ -13,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -24,12 +27,22 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private DatabaseReference usersRef;
+
     private GoogleApiClient googleApiClient;
 
     private NavigationView navigationView;
@@ -38,23 +51,71 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private Toolbar mToolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
+    private CircleImageView navProfileImage;
+    private TextView navProfileUserName;
+
+
+
+    String currenUserID;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         inicializar();
+
+        currenUserID = firebaseAuth.getCurrentUser().getUid();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Home");
+
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         View navigation_view = navigationView.inflateHeaderView(R.layout.navigation_header);
+        navProfileImage = (CircleImageView) navigation_view.findViewById(R.id.nav_profile_image);
+        navProfileUserName = (TextView) navigation_view.findViewById(R.id.nav_user_full_name);
+
+
+
+
+
+        usersRef.child(currenUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+
+                    if (dataSnapshot.hasChild("fullname")){
+                        String fullname = dataSnapshot.child("fullname").getValue().toString();
+                        navProfileUserName.setText(fullname);
+                    }
+
+                    if (dataSnapshot.hasChild("profileimage")){
+                        String image = dataSnapshot.child("profileimage").getValue().toString();
+                        Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.profile).into(navProfileImage);
+                    }else{
+                        Toast.makeText(MainActivity.this,"Profile name does not exists",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -64,6 +125,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
+    }
+
+    private void sendUserToPostActivity() {
+        Intent post = new Intent(MainActivity.this,PostActivity.class);
+        startActivity(post);
+        finish();
     }
 
     @Override
@@ -76,6 +143,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void userMenuSelectro(MenuItem item) {
         switch (item.getItemId()){
+
+            case R.id.nav_post:
+                Toast.makeText(this,"Post",Toast.LENGTH_SHORT).show();
+                sendUserToPostActivity();
+                break;
 
             case R.id.nav_profile:
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();

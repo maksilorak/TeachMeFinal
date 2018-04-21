@@ -31,6 +31,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.32.0'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     testImplementation 'junit:junit:4.12'
