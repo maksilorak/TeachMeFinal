@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.nelson.proyectofinal.Model.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -136,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
+                            getUserData();
                             goMainActivity();
                         }else{
                             Toast.makeText(LoginActivity.this,"Autenticacion con Facebook no exitosa",
@@ -175,6 +177,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    getUserData();
                     goMainActivity();
                 }
             });
@@ -182,6 +186,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Toast.makeText(LoginActivity.this,"Autenticación con GOOGLE no exitosa",Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void getUserData(){
+        User user = new User();
+        user.setEmail(firebaseAuth.getCurrentUser().getEmail());
+        user.setFullname(firebaseAuth.getCurrentUser().getDisplayName());
+        user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+        user.setCountry("Colombia");
+        user.setUsername("none");
+        user.setDob("12-12-1900");
+        user.setGender("none");
+        user.setRelationshipstatus("Single");
+        user.setStatus("New User");
+
+
+        users.child(firebaseAuth.getCurrentUser().getUid())
+                .setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(LoginActivity.this,"Datos Usuario Actualizados", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void goMainActivity() {

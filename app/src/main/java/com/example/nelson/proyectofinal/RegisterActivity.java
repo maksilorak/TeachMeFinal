@@ -12,18 +12,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nelson.proyectofinal.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+
     private Button btnSignUp;
-     private EditText nameText, emailText, passwordText;
+     private EditText nameText, emailText, passwordText,repeatPasswordText;
     private TextView loginLink;
+
+    String currentUserID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,15 +44,19 @@ public class RegisterActivity extends AppCompatActivity {
         nameText = (EditText) findViewById(R.id.input_name);
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
+        repeatPasswordText = (EditText) findViewById(R.id.input_repeat_password);
         loginLink = (TextView) findViewById(R.id.link_login);
 
         // firebase instance
         firebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference("Users");
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
+
                     Log.d("User:","User Logged In"+user.getDisplayName());
                 }
             }
@@ -58,17 +72,24 @@ public class RegisterActivity extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Login = new Intent(RegisterActivity.this,LoginActivity.class);
-                startActivity(Login);
-                finish();
+                goLoginActivity();
             }
         });
 
     }
 
+    private void goLoginActivity() {
+        Intent login = new Intent(RegisterActivity.this,LoginActivity.class);
+        startActivity(login);
+        finish();
+    }
+
     private void signUp() {
-        String email = emailText.getText().toString();
+
+        final String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
+        final String name = nameText.getText().toString();
+
 
         if (!validate()) {
             onSignupFailed();
@@ -78,11 +99,45 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
-                                Toast.makeText(RegisterActivity.this,"Cuenta Creada", Toast.LENGTH_SHORT).show();
-                                Intent Login = new Intent(RegisterActivity.this,LoginActivity.class);
-                                startActivity(Login);
-                                finish();
+
+                                currentUserID = firebaseAuth.getCurrentUser().getUid();
+
+                                User user = new User();
+                                user.setEmail(email);
+                                user.setFullname(name);
+                                user.setProfileimage("https://i0.wp.com/geekazos.com/wp-content/uploads/2015/02/fb2.jpg?fit=1280%2C720");
+                                user.setCountry("Colombia");
+                                user.setUsername("none");
+                                user.setDob("12-12-1900");
+                                user.setGender("none");
+                                user.setRelationshipstatus("Single");
+                                user.setStatus("New User");
+
+
+                                myRef.child(currentUserID)
+                                        .setValue(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(RegisterActivity.this,"Cuenta Creada", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(RegisterActivity.this,"Cuenta No Creada"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                firebaseAuth.signOut();
+                                goLoginActivity();
                             }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(RegisterActivity.this,e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -100,6 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
         String name = nameText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
+        String repeatPassword =repeatPasswordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             nameText.setError("at least 3 characters");
@@ -120,6 +176,11 @@ public class RegisterActivity extends AppCompatActivity {
             valid = false;
         } else {
             passwordText.setError(null);
+        }
+
+        if (!password.equals(repeatPassword)){
+            repeatPasswordText.setError("The passwords don't match");
+            valid = false;
         }
 
         return valid;

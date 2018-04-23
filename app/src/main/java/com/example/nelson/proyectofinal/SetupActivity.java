@@ -177,7 +177,7 @@ public class SetupActivity extends AppCompatActivity {
             userMap.put("status","Married");
             userMap.put("gender","none");
             userMap.put("dob","none");
-            userMap.put("relationship status","none");
+            userMap.put("relationshipstatus","none");
             usersRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {

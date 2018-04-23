@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+
+    <include android:id="@+id/settings_toolbar"
+        layout="@layout/app_bar_layout">
+
+
+    </include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="843dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="71dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/settings_profile_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/profile" />
+
+            <EditText
+                android:id="@+id/settings_status"
+                android:layout_below="@id/settings_profile_image"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="profile status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/settings_username"
+                android:layout_below="@id/settings_status"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <EditText
+                android:id="@+id/settings_profilename"
+                android:layout_below="@id/settings_username"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="profile name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/settings_profile_country"
+                android:layout_below="@id/settings_profilename"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="profile country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/settings_profile_date_birth"
+                android:layout_below="@id/settings_profile_country"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="Date of Birth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/settings_profile_gender"
+                android:layout_below="@id/settings_profile_date_birth"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="Gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/settings_profile_relationship_status"
+                android:layout_below="@id/settings_profile_gender"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:hint="Relationship Status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/update_account_settings_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/settings_profile_relationship_status"
+                android:text="update account settings"
+                android:layout_margin="20dp"
+                android:background="@drawable/white_rounded_button"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

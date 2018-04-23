@@ -26,6 +26,6 @@
         android:layout_marginBottom="13dp"
         android:text="usermane"
         android:textColor="@android:color/background_light"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
 </RelativeLayout>

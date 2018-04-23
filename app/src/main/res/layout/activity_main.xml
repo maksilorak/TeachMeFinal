@@ -23,21 +23,34 @@
         </include>
 
 
-
         <FrameLayout
 
             android:id="@+id/main_container"
             android:layout_width="match_parent"
-            android:layout_height="539dp"
+            android:layout_height="855dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="59dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/all_users_post_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
         </FrameLayout>
 
+        <ImageButton
+            android:id="@+id/add_new_post_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="5dp"
+            android:baselineAlignBottom="false"
+            android:focusableInTouchMode="false"
+            android:background="@color/grey"
+            android:src="@drawable/ic_insert_post" />
 
     </RelativeLayout>
 

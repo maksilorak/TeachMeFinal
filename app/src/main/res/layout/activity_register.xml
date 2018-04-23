@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
-                android:hint="Name" />
+                android:hint="@string/hint_fullname" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email" />
+                android:hint="@string/hint_correo" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -55,7 +55,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"/>
+                android:hint="@string/hint_contrasena"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Repeat Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_repeat_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/hint_repeat_contrasena"/>
         </android.support.design.widget.TextInputLayout>
 
 
@@ -76,10 +89,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:textColor="@color/link_blue"
-            android:text="Already a member? Login"
+            android:text="@string/already_member"
             android:gravity="center"
-            android:textSize="16dp"/>
-
+            android:textSize="16sp"/>
 
 
     </LinearLayout>

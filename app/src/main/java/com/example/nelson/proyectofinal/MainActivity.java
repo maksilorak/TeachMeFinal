@@ -1,5 +1,6 @@
 package com.example.nelson.proyectofinal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -7,7 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ActionBarContainer;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,7 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nelson.proyectofinal.Model.Posts;
 import com.facebook.login.LoginManager;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -36,12 +39,13 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private DatabaseReference usersRef;
+    private DatabaseReference usersRef, postsRef;
 
     private GoogleApiClient googleApiClient;
 
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private CircleImageView navProfileImage;
     private TextView navProfileUserName;
+    private ImageButton addNewPostButton;
 
 
 
@@ -68,12 +73,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         currenUserID = firebaseAuth.getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
 
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Home");
 
+        addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
 
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
@@ -88,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         navProfileUserName = (TextView) navigation_view.findViewById(R.id.nav_user_full_name);
 
 
+
+        postList = (RecyclerView) findViewById(R.id.all_users_post_list);
+        postList.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        postList.setLayoutManager(linearLayoutManager);
 
 
 
@@ -125,6 +139,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
 
+        addNewPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserToPostActivity();
+            }
+        });
+
+
+        displayAllUsersPosts();
     }
 
     private void sendUserToPostActivity() {
@@ -151,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             case R.id.nav_profile:
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();
-                goSetup();
                 break;
 
 
@@ -174,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
             case R.id.nav_settings:
+                sendUserToSettingsActivity();
                 Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
                 break;
 
@@ -182,6 +205,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 cerrarSesion();
                 break;
         }
+    }
+
+    private void sendUserToSettingsActivity() {
+        Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(settings);
+        //finish();
     }
 
     private void goSetup() {
@@ -227,13 +256,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null){
-                    Log.d("FirebaseUser: ", "Usuario Logueado");
+                if (user == null){
+                    goLoginActivity();
+                    Log.d("FirebaseUser: ", "Usuario No Logueado");
 
                 }
                 else{
-                    Log.d("FirebaseUser: ", "Usuario No Logueado");
-                    goLoginActivity();
+
+                    Log.d("FirebaseUser: ", "Usuario Logueado");
                 }
             }
         };
@@ -276,6 +306,83 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void displayAllUsersPosts() {
+        FirebaseRecyclerAdapter <Posts,postsViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Posts,postsViewHolder>
+                        (
+                                Posts.class,
+                                R.layout.all_posts_layout,
+                                postsViewHolder.class,
+                                postsRef
+                        )
+                {
+                    @Override
+                    protected void populateViewHolder(postsViewHolder viewHolder, Posts model, int position) {
+
+                        final String postKey = getRef(position).getKey();
+
+                        viewHolder.setFullname(model.getFullname());
+                        viewHolder.setDate(model.getDate());
+                        viewHolder.setTime(model.getTime());
+                        viewHolder.setDescription(model.getDescription());
+                        viewHolder.setProfileimage(getApplicationContext(),model.getProfileimage());
+                        viewHolder.setPostimage(getApplicationContext(),model.getPostImage());
+
+                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent clickPOST = new Intent(MainActivity.this,ClickPostActivity.class);
+                                clickPOST.putExtra("postKey",postKey);
+                                startActivity(clickPOST);
+                            }
+                        });
+                    }
+                };
+
+        postList.setAdapter(firebaseRecyclerAdapter);
+    }
+
+    public static class postsViewHolder extends RecyclerView.ViewHolder{
+
+        View mView;
+
+        public postsViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setFullname(String fullname) {
+            TextView username = (TextView) mView.findViewById(R.id.post_user_name);
+            username.setText(fullname);
+        }
+
+        public void setProfileimage(Context ctx, String profileimage) {
+            CircleImageView image = (CircleImageView) mView.findViewById(R.id.post_profile_image);
+            Picasso.with(ctx).load(profileimage).into(image);
+        }
+
+        public void setTime(String time) {
+            TextView post_time = (TextView) mView.findViewById(R.id.post_time);
+            post_time.setText("   "+time);
+        }
+
+        public void setDate(String date) {
+            TextView post_date = (TextView) mView.findViewById(R.id.post_date);
+            post_date.setText("   "+date);
+        }
+
+        public void setDescription(String description) {
+            TextView post_description = (TextView) mView.findViewById(R.id.post_description);
+            post_description.setText(description);
+        }
+
+        public void setPostimage(Context ctx, String postImage) {
+            ImageView post_image = (ImageView) mView.findViewById(R.id.post_image);
+            Picasso.with(ctx).load(postImage).into(post_image);
+        }
 
     }
 }
