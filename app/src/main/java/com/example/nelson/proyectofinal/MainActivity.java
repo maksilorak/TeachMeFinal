@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 break;
 
             case R.id.nav_find_friends:
+                goToSeearchFriends();
                 Toast.makeText(this,"Fnd Friends",Toast.LENGTH_SHORT).show();
                 break;
 
@@ -205,6 +206,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 cerrarSesion();
                 break;
         }
+    }
+
+    private void goToSeearchFriends() {
+        Intent friends = new Intent(MainActivity.this,SearchActivity.class);
+        startActivity(friends);
+        //finish();
     }
 
     private void sendUserToSettingsActivity() {
@@ -366,12 +373,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         public void setTime(String time) {
             TextView post_time = (TextView) mView.findViewById(R.id.post_time);
-            post_time.setText("   "+time);
+            post_time.setText(" "+time);
         }
 
         public void setDate(String date) {
             TextView post_date = (TextView) mView.findViewById(R.id.post_date);
-            post_date.setText("   "+date);
+            post_date.setText(" "+date);
         }
 
         public void setDescription(String description) {
