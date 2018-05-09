@@ -103,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 currentUserID = firebaseAuth.getCurrentUser().getUid();
 
                                 User user = new User();
+                                user.setUid(currentUserID);
                                 user.setEmail(email);
                                 user.setFullname(name);
                                 user.setProfileimage("https://i0.wp.com/geekazos.com/wp-content/uploads/2015/02/fb2.jpg?fit=1280%2C720");
@@ -114,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setStatus("New User");
 
 
-                                myRef.child(currentUserID)
+                                myRef.child(name)
                                         .setValue(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override

@@ -189,19 +189,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void getUserData(){
+
+        String email = firebaseAuth.getCurrentUser().getEmail();
+        String nombre =firebaseAuth.getCurrentUser().getDisplayName();
         User user = new User();
-        user.setEmail(firebaseAuth.getCurrentUser().getEmail());
-        user.setFullname(firebaseAuth.getCurrentUser().getDisplayName());
+        user.setUid(firebaseAuth.getCurrentUser().getUid());
+        user.setEmail(email);
+        user.setFullname(nombre);
         user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
         user.setCountry("Colombia");
         user.setUsername("none");
         user.setDob("12-12-1900");
         user.setGender("none");
         user.setRelationshipstatus("Single");
-        user.setStatus("New User");
+        user.setStatus("Hi there.  I'm a new User");
 
 
-        users.child(firebaseAuth.getCurrentUser().getUid())
+        users.child(nombre)
                 .setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

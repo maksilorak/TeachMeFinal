@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -56,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         settingsUserReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
+        settingsUserReference.keepSynced(true);
         usrProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         mToolbar = (Toolbar) findViewById(R.id.settings_toolbar);
@@ -91,7 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
                     String myProfileGender = dataSnapshot.child("gender").getValue().toString();
                     String myProfileRelationStatus = dataSnapshot.child("relationshipstatus").getValue().toString();
 
-                    Picasso.with(SettingsActivity.this).load(myProfileImage).placeholder(R.drawable.profile).into(userprofileImage);
+                    //Picasso.with(SettingsActivity.this).load(myProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.profile).into(userprofileImage);
 
                     userName.setText(myProfileUsername);
                     userProfileName.setText(myProfileName);

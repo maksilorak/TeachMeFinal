@@ -1,11 +1,11 @@
 package com.example.nelson.proyectofinal.Model;
 
-public class User {
-    private String country, dob,fullname,gender,status,username,relationshipstatus,profileimage, email;
-    public User() {
-    }
+import java.io.Serializable;
 
-    public User(String country, String dob, String fullname, String gender, String status, String username, String relationshipstatus, String profileimage, String email) {
+public class User implements Serializable{
+    private String country, dob,fullname,gender,status,username,relationshipstatus,profileimage, email,uid;
+
+    public User(String country, String dob, String fullname, String gender, String status, String username, String relationshipstatus, String profileimage, String email, String uid) {
         this.country = country;
         this.dob = dob;
         this.fullname = fullname;
@@ -15,6 +15,10 @@ public class User {
         this.relationshipstatus = relationshipstatus;
         this.profileimage = profileimage;
         this.email = email;
+        this.uid = uid;
+    }
+
+    public User() {
     }
 
     public String getCountry() {
@@ -87,5 +91,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProyectoFinal</string>
+    <string name="app_name">Teach Me</string>
     <string name="hint_correo">Email</string>
     <string name="hint_contrasena">Password</string>
     <string name="btnIniciarSesion">SIGN IN</string>
@@ -20,5 +20,9 @@
     <string name="drawer_close">Drawer Close</string>
     <string name="hint_repeat_contrasena">Repeat Password</string>
     <string name="already_member">Already a member? Login</string>
+    <string name="messages_hint">Message</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

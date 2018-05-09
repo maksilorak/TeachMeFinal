@@ -35,7 +35,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/all_users_post_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
         </FrameLayout>
 
         <ImageButton
@@ -62,7 +64,7 @@
         android:layout_alignParentStart="true"
         android:layout_gravity="start"
         android:layout_marginBottom="3dp"
-        app:menu="@menu/navigation_menu">
+        app:menu="@menu/drawerlayout">
 
     </android.support.design.widget.NavigationView>
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +62,8 @@ public class ClickPostActivity extends AppCompatActivity {
                     databaseUserID = dataSnapshot.child("uid").getValue().toString();
 
                     postDescription.setText(description);
-                    Picasso.with(ClickPostActivity.this).load(image).into(postImage);
+                    //Picasso.with(ClickPostActivity.this).load(image).into(postImage);
+                    Picasso.get().load(image).into(postImage);
 
                     if (currenUserID.equals(databaseUserID)){
                         deletePostButton.setVisibility(View.VISIBLE);

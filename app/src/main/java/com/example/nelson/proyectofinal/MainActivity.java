@@ -24,10 +24,12 @@ import android.widget.Toast;
 
 
 import com.example.nelson.proyectofinal.Model.Posts;
+import com.example.nelson.proyectofinal.Model.User;
 import com.facebook.login.LoginManager;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference usersRef, postsRef;
-    FirebaseRecyclerAdapter <Posts,MainActivity.postsViewHolder> firebaseRecyclerAdapter;
+    FirebaseRecyclerAdapter <Posts,postsViewHolder> usersRecyclerAdapter;
 
     private GoogleApiClient googleApiClient;
 
@@ -181,6 +183,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void userMenuSelectro(MenuItem item) {
         switch (item.getItemId()){
 
+            case R.id.add_post:
+                sendUserToPostActivity();
+                break;
+            case R.id.logout:
+                cerrarSesion();
+                break;
+
 
         }
     }
@@ -217,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStop() {
         super.onStop();
         firebaseAuth.removeAuthStateListener(authStateListener);
+        usersRecyclerAdapter.stopListening();
 
     }
 
@@ -224,6 +234,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(authStateListener);
+        usersRecyclerAdapter.startListening();
+        displayAllUsersPosts();
     }
 
     @Override
@@ -306,8 +318,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void displayAllUsersPosts() {
+        Query usersQuery = postsRef.orderByValue();
+        FirebaseRecyclerOptions postsOptions= new FirebaseRecyclerOptions.Builder<Posts>().setQuery(usersQuery,Posts.class).build();
+        usersRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, MainActivity.postsViewHolder>(postsOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull postsViewHolder holder, int position, @NonNull Posts model) {
+                final String postKey = getRef(position).getKey();
+                holder.setFullname(model.getFullname());
+                holder.setDate(model.getDate());
+                holder.setTime(model.getTime());
+                holder.setDescription(model.getDescription());
+                holder.setProfileimage(getApplicationContext(),model.getProfileimage());
+                holder.setPostimage(getApplicationContext(),model.getPostImage());
 
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent clickPOST = new Intent(MainActivity.this,ClickPostActivity.class);
+                        clickPOST.putExtra("postKey",postKey);
+                        startActivity(clickPOST);
+                    }
+                });
+            }
 
+            @NonNull
+            @Override
+            public postsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return null;
+            }
+        };
+
+        postList.setAdapter(usersRecyclerAdapter);
     }
 
     public static class postsViewHolder extends RecyclerView.ViewHolder{
