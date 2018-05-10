@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.example.nelson.proyectofinal.Model.User;
 import com.example.nelson.proyectofinal.ProfileActivity;
 import com.example.nelson.proyectofinal.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,11 +44,23 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UsersViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final UsersViewHolder holder, final int position) {
 
         holder.username.setText(listaUsuarios.get(position).getFullname());
         holder.status_search.setText(listaUsuarios.get(position).getStatus());
-        Picasso.get().load(listaUsuarios.get(position).getProfileimage()).into(holder.image);
+        //With load of the picture in offline conditions
+        Picasso.get().load(listaUsuarios.get(position).getProfileimage()).networkPolicy(NetworkPolicy.OFFLINE)
+                .into(holder.image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Picasso.get().load(listaUsuarios.get(position).getProfileimage()).into(holder.image);
+                    }
+                });
         holder.UID.setText(listaUsuarios.get(position).getUid());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

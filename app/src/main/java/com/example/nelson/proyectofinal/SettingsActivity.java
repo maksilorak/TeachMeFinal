@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -84,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    final String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
                     String myProfileUsername = dataSnapshot.child("username").getValue().toString();
                     String myProfileName = dataSnapshot.child("fullname").getValue().toString();
                     String myProfileStatus = dataSnapshot.child("status").getValue().toString();
@@ -93,7 +94,17 @@ public class SettingsActivity extends AppCompatActivity {
                     String myProfileGender = dataSnapshot.child("gender").getValue().toString();
                     String myProfileRelationStatus = dataSnapshot.child("relationshipstatus").getValue().toString();
 
-                    Picasso.get().load(myProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.profile).into(userprofileImage);
+                    Picasso.get().load(myProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.profile).into(userprofileImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userprofileImage);
+                        }
+                    });
 
                     userName.setText(myProfileUsername);
                     userProfileName.setText(myProfileName);

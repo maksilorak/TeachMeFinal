@@ -66,6 +66,7 @@ public class UsersFragment extends Fragment {
 
         mUserDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference =mUserDatabase.getReference();
+        mUserDatabaseReference.keepSynced(true);
 
 
 
