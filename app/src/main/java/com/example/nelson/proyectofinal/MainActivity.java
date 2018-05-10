@@ -1,35 +1,25 @@
 package com.example.nelson.proyectofinal;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.example.nelson.proyectofinal.Model.Posts;
-import com.example.nelson.proyectofinal.Model.User;
 import com.facebook.login.LoginManager;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
-
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,14 +28,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private DatabaseReference usersRef, postsRef;
-    FirebaseRecyclerAdapter <Posts,postsViewHolder> usersRecyclerAdapter;
+    //FirebaseRecyclerAdapter <Posts,postsViewHolder> usersRecyclerAdapter;
 
     private GoogleApiClient googleApiClient;
 
@@ -72,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
     private ViewPager mViewPager;
+    private TabLayout mTabLayout;
+    private TabsPageAdapter mTabsPagerAdapter;
 
 
 
@@ -89,81 +75,66 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
 
+        // Tabs for Main Activity
+        mViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+        mTabsPagerAdapter = new TabsPageAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mTabsPagerAdapter);
+        mTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
 
+        //Toolbar
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("TeachMe");
 
-        addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
+        //addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
 
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
-        actionBarDrawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
+        //drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        //actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout,R.string.drawer_open,R.string.drawer_close);
+        //actionBarDrawerToggle.syncState();
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        View navigation_view = navigationView.inflateHeaderView(R.layout.navigation_header);
-        navProfileImage = (CircleImageView) navigation_view.findViewById(R.id.nav_profile_image);
-        navProfileUserName = (TextView) navigation_view.findViewById(R.id.nav_user_full_name);
+        //navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        //View navigation_view = navigationView.inflateHeaderView(R.layout.navigation_header);
+        //navProfileImage = (CircleImageView) navigation_view.findViewById(R.id.nav_profile_image);
+        //navProfileUserName = (TextView) navigation_view.findViewById(R.id.nav_user_full_name);
 
 
 
-        postList = (RecyclerView) findViewById(R.id.all_users_post_list);
-        postList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        postList.setLayoutManager(linearLayoutManager);
+        //postList = (RecyclerView) findViewById(R.id.all_users_post_list);
+        //postList.setHasFixedSize(true);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        //linearLayoutManager.setReverseLayout(true);
+        //linearLayoutManager.setStackFromEnd(true);
+        //postList.setLayoutManager(linearLayoutManager);
 
 
 
-        usersRef.child(currenUserID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-
-                    if (dataSnapshot.hasChild("fullname")){
-                        String fullname = dataSnapshot.child("fullname").getValue().toString();
-                        navProfileUserName.setText(fullname);
-                    }
-
-                    if (dataSnapshot.hasChild("profileimage")){
-                        String image = dataSnapshot.child("profileimage").getValue().toString();
-                        //Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.profile).into(navProfileImage);
-                        Picasso.get().load(image).placeholder(R.drawable.profile).into(navProfileImage);
-                    }else{
-                        Toast.makeText(MainActivity.this,"Profile name does not exists",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                userMenuSelectro(item);
-                return false;
-            }
-        });
-
-        addNewPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendUserToPostActivity();
-            }
-        });
+    }
 
 
-        displayAllUsersPosts();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.drawerlayout,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_post:
+                goToPost();
+
+            case R.id.logout:
+                cerrarSesion();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void sendUserToPostActivity() {
@@ -172,26 +143,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void userMenuSelectro(MenuItem item) {
-        switch (item.getItemId()){
-
-            case R.id.add_post:
-                sendUserToPostActivity();
-                break;
-            case R.id.logout:
-                cerrarSesion();
-                break;
-
-
-        }
+    private void goToPost() {
+        Intent post = new Intent(MainActivity.this,PostActivity.class);
+        startActivity(post);
+        finish();
     }
 
     private void goToProfile() {
@@ -226,7 +181,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStop() {
         super.onStop();
         firebaseAuth.removeAuthStateListener(authStateListener);
-        usersRecyclerAdapter.stopListening();
 
     }
 
@@ -234,8 +188,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(authStateListener);
-        usersRecyclerAdapter.startListening();
-        displayAllUsersPosts();
     }
 
     @Override
@@ -248,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onResume() {
         super.onResume();
         googleApiClient.connect();
-        displayAllUsersPosts();
+
     }
 
     @Override
@@ -317,80 +269,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
-    private void displayAllUsersPosts() {
-        Query usersQuery = postsRef.orderByValue();
-        FirebaseRecyclerOptions postsOptions= new FirebaseRecyclerOptions.Builder<Posts>().setQuery(usersQuery,Posts.class).build();
-        usersRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, MainActivity.postsViewHolder>(postsOptions) {
-            @Override
-            protected void onBindViewHolder(@NonNull postsViewHolder holder, int position, @NonNull Posts model) {
-                final String postKey = getRef(position).getKey();
-                holder.setFullname(model.getFullname());
-                holder.setDate(model.getDate());
-                holder.setTime(model.getTime());
-                holder.setDescription(model.getDescription());
-                holder.setProfileimage(getApplicationContext(),model.getProfileimage());
-                holder.setPostimage(getApplicationContext(),model.getPostImage());
-
-                holder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent clickPOST = new Intent(MainActivity.this,ClickPostActivity.class);
-                        clickPOST.putExtra("postKey",postKey);
-                        startActivity(clickPOST);
-                    }
-                });
-            }
-
-            @NonNull
-            @Override
-            public postsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return null;
-            }
-        };
-
-        postList.setAdapter(usersRecyclerAdapter);
-    }
-
-    public static class postsViewHolder extends RecyclerView.ViewHolder{
-
-        View mView;
-
-        public postsViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setFullname(String fullname) {
-            TextView username = (TextView) mView.findViewById(R.id.post_user_name);
-            username.setText(fullname);
-        }
-
-        public void setProfileimage(Context ctx, String profileimage) {
-            CircleImageView image = (CircleImageView) mView.findViewById(R.id.post_profile_image);
-            //Picasso.with(ctx).load(profileimage).into(image);
-            Picasso.get().load(profileimage).into(image);
-        }
-
-        public void setTime(String time) {
-            TextView post_time = (TextView) mView.findViewById(R.id.post_time);
-            post_time.setText(" "+time);
-        }
-
-        public void setDate(String date) {
-            TextView post_date = (TextView) mView.findViewById(R.id.post_date);
-            post_date.setText(" "+date);
-        }
-
-        public void setDescription(String description) {
-            TextView post_description = (TextView) mView.findViewById(R.id.post_description);
-            post_description.setText(description);
-        }
-
-        public void setPostimage(Context ctx, String postImage) {
-            ImageView post_image = (ImageView) mView.findViewById(R.id.post_image);
-            //Picasso.with(ctx).load(postImage).into(post_image);
-            Picasso.get().load(postImage).into(post_image);
-        }
-
-    }
 }

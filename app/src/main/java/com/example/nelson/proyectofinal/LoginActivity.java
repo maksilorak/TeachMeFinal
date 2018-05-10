@@ -1,5 +1,6 @@
 package com.example.nelson.proyectofinal;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -61,11 +62,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseDatabase db;
     private DatabaseReference users;
     public static  final int SING_IN_CODE=999;
-    EditText eCorreo, eContrasena;
-    TextView signUpLink;
-    RelativeLayout rootLayout;
+    private EditText eCorreo, eContrasena;
+    private TextView signUpLink;
+    private RelativeLayout rootLayout;
     private SignInButton btnSignInGoogle;
     private LoginButton btnSignInFacebook;
+
+
+    private ProgressDialog loadingBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +86,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnSignInGoogle = (SignInButton) findViewById(R.id.btnSignInGoogle);
         btnSignInFacebook = (LoginButton) findViewById(R.id.btnSignInFacebook);
         signUpLink = (TextView) findViewById(R.id.link_signup);
+
+
+        loadingBar = new ProgressDialog(this);
 
 
 
@@ -192,8 +199,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         String email = firebaseAuth.getCurrentUser().getEmail();
         String nombre =firebaseAuth.getCurrentUser().getDisplayName();
+        String UID = firebaseAuth.getCurrentUser().getUid();
         User user = new User();
-        user.setUid(firebaseAuth.getCurrentUser().getUid());
+        user.setUid(UID);
         user.setEmail(email);
         user.setFullname(nombre);
         user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
@@ -205,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         user.setStatus("Hi there.  I'm a new User");
 
 
-        users.child(nombre)
+        users.child(UID)
                 .setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

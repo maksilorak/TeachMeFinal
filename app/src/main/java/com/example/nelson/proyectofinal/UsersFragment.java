@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 
 
 /**
@@ -37,6 +43,7 @@ public class UsersFragment extends Fragment {
     private FirebaseDatabase mUserDatabase;
 
 
+
     public UsersFragment() {
         // Required empty public constructor
     }
@@ -54,7 +61,7 @@ public class UsersFragment extends Fragment {
 
         listaUsuarios =new ArrayList<>();
 
-        adapterUsuarios = new UsersAdapter(listaUsuarios,R.layout.list_layout,getActivity());
+        adapterUsuarios = new UsersAdapter(listaUsuarios,getContext());
         resultlist.setAdapter(adapterUsuarios);
 
         mUserDatabase = FirebaseDatabase.getInstance();
@@ -71,6 +78,7 @@ public class UsersFragment extends Fragment {
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         User usuarios = snapshot.getValue(User.class);
                         listaUsuarios.add(usuarios);
+                        Log.d("Users id","ID: "+usuarios.getUid());
                     }
                     adapterUsuarios.notifyDataSetChanged();
                 }

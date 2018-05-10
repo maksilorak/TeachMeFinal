@@ -1,9 +1,10 @@
 package com.example.nelson.proyectofinal.Adapters;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,48 +16,46 @@ import com.example.nelson.proyectofinal.Model.User;
 import com.example.nelson.proyectofinal.ProfileActivity;
 import com.example.nelson.proyectofinal.R;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder>{
+public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
     private ArrayList<User> listaUsuarios;
-    private int resource;
-    private Activity activity;
+    private Context context;
 
-
-    public UsersAdapter(ArrayList<User> listaUsuarios) {
+    public UsersAdapter(ArrayList<User> listaUsuarios, Context context) {
         this.listaUsuarios = listaUsuarios;
-    }
-
-    public UsersAdapter(ArrayList<User> listaUsuarios, int resource, Activity activity) {
-        this.listaUsuarios = listaUsuarios;
-        this.resource = resource;
-        this.activity = activity;
+        this.context = context;
     }
 
     @NonNull
+
     @Override
     public UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(resource,parent,false);
+        View itemView;
+        LayoutInflater inflater =  LayoutInflater.from(context);
+        itemView = inflater.inflate(R.layout.list_layout,parent,false);
         return new UsersViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UsersViewHolder holder, final int position) {
 
-        final User users = listaUsuarios.get(position);
-        holder.setUsuarios(users,activity);
-        final String name = users.getFullname();
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.username.setText(listaUsuarios.get(position).getFullname());
+        holder.status_search.setText(listaUsuarios.get(position).getStatus());
+        Picasso.get().load(listaUsuarios.get(position).getProfileimage()).into(holder.image);
+        holder.UID.setText(listaUsuarios.get(position).getUid());
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idUsuario=users.getUid();
-                Intent profile = new Intent(activity,ProfileActivity.class);
-                profile.putExtra("user",idUsuario);
-                Log.d("Dato enviado","user: "+idUsuario);
-                activity.startActivity(profile);
+                Intent perfil = new Intent(context, ProfileActivity.class);
+                Log.d("OnClicked:  Clicked ON","USUARIO: "+listaUsuarios.get(position).getUid());
+                perfil.putExtra("user",listaUsuarios.get(position).getUid());
+                Log.d("Dato enviado","USUARIO: "+listaUsuarios.get(position).getUid());
+                context.startActivity(perfil);
             }
         });
 
@@ -67,27 +66,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         return listaUsuarios.size();
     }
 
+    public static class UsersViewHolder extends RecyclerView.ViewHolder {
 
-    public static class UsersViewHolder extends RecyclerView.ViewHolder{
-
-        TextView username,status_search;
+        TextView username,status_search,UID;
         CircleImageView image;
-        String UID;
+        CardView cardView;
 
         public UsersViewHolder(View itemView) {
             super(itemView);
+
             username = (TextView) itemView.findViewById(R.id.name_search);
             status_search = (TextView) itemView.findViewById(R.id.status_search);
             image = (CircleImageView) itemView.findViewById(R.id.photo_search);
+            cardView = (CardView) itemView.findViewById(R.id.cardeview);
+            UID = (TextView) itemView.findViewById(R.id.user_id);
         }
-
-
-        public void setUsuarios(User usuarios, Activity activity){
-            username.setText(usuarios.getFullname());
-            status_search.setText(usuarios.getStatus());
-            Picasso.get().load(usuarios.getProfileimage()).into(image);
-
-        }
-
     }
 }

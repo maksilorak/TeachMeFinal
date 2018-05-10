@@ -112,10 +112,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setDob("12-12-1900");
                                 user.setGender("none");
                                 user.setRelationshipstatus("Single");
-                                user.setStatus("New User");
+                                user.setStatus("Hey There.  I'm using Teach Me to find people qho can teach me a language");
 
 
-                                myRef.child(name)
+                                myRef.child(currentUserID)
                                         .setValue(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override

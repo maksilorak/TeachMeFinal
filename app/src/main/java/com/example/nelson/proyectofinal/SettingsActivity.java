@@ -93,7 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
                     String myProfileGender = dataSnapshot.child("gender").getValue().toString();
                     String myProfileRelationStatus = dataSnapshot.child("relationshipstatus").getValue().toString();
 
-                    //Picasso.with(SettingsActivity.this).load(myProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.profile).into(userprofileImage);
+                    Picasso.get().load(myProfileImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.profile).into(userprofileImage);
 
                     userName.setText(myProfileUsername);
                     userProfileName.setText(myProfileName);
