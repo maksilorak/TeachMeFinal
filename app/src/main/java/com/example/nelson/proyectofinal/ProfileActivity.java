@@ -1,22 +1,22 @@
 package com.example.nelson.proyectofinal;
 
-import android.app.ProgressDialog;
-import android.icu.util.Currency;
+
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.flags.IFlagProvider;
+
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,11 +24,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileName,profileStatus;
     private ImageView profileImage;
 
-    private DatabaseReference usersReference, friendRequestReference,friendsReference;
+    private DatabaseReference usersReference, friendRequestReference,friendsReference,NotificactionsReference;
     private FirebaseAuth mAuth;
 
     private String CURRENT_STATE,sender_user_id,receiver_user_id;
@@ -53,6 +53,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         friendsReference = FirebaseDatabase.getInstance().getReference().child("Friends");
         friendsReference.keepSynced(true);
+        NotificactionsReference = FirebaseDatabase.getInstance().getReference().child("Notifications");
+        NotificactionsReference.keepSynced(true);
+
+
         usersReference = FirebaseDatabase.getInstance().getReference().child("Users");
         friendRequestReference = FirebaseDatabase.getInstance().getReference().child("Friend_Requets");
         friendRequestReference.keepSynced(true);
@@ -236,11 +240,11 @@ public class ProfileActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
         final String saveCurrentDate = currentDate.format(calendar.getTime());
 
-        friendsReference.child(sender_user_id).child(receiver_user_id).setValue(saveCurrentDate)
+        friendsReference.child(sender_user_id).child(receiver_user_id).child("date").setValue(saveCurrentDate)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                friendsReference.child(receiver_user_id).child(sender_user_id).setValue(saveCurrentDate)
+                friendsReference.child(receiver_user_id).child(sender_user_id).child("date").setValue(saveCurrentDate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -261,6 +265,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
+
                                 }
                             }
                         });
@@ -268,6 +273,24 @@ public class ProfileActivity extends AppCompatActivity {
                 });
             }
         });
+
+
+        friendsReference.child(sender_user_id).child(receiver_user_id).child("uid").setValue(receiver_user_id)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                friendsReference.child(receiver_user_id).child(sender_user_id).child("uid").setValue(sender_user_id)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("Usuario Guardado :","USUARIO"+receiver_user_id);
+                            }
+                        });
+            }
+        });
+
+
+
 
     }
 
@@ -307,12 +330,25 @@ public class ProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
-                                        sendFriendRequest.setEnabled(true);
-                                        CURRENT_STATE = "request_sent";
-                                        sendFriendRequest.setText("Cancel Friend Request");
 
-                                        declineFriendRequest.setVisibility(View.INVISIBLE);
-                                        declineFriendRequest.setEnabled(false);
+                                        HashMap<String,String> notificationsData = new HashMap<String, String>();
+                                        notificationsData.put("from ",sender_user_id);
+                                        notificationsData.put("type ","request");
+                                        NotificactionsReference.child(receiver_user_id).push().setValue(notificationsData)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()){
+                                                    sendFriendRequest.setEnabled(true);
+                                                    CURRENT_STATE = "request_sent";
+                                                    sendFriendRequest.setText("Cancel Friend Request");
+
+                                                    declineFriendRequest.setVisibility(View.INVISIBLE);
+                                                    declineFriendRequest.setEnabled(false);
+                                                }
+                                            }
+                                        });
+
                                     }
                                 }
                             });
@@ -324,6 +360,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-    
+
 
 }

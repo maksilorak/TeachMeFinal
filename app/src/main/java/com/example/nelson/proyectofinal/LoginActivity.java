@@ -51,6 +51,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -67,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private RelativeLayout rootLayout;
     private SignInButton btnSignInGoogle;
     private LoginButton btnSignInFacebook;
+
+
 
 
     private ProgressDialog loadingBar;
@@ -200,8 +203,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         String email = firebaseAuth.getCurrentUser().getEmail();
         String nombre =firebaseAuth.getCurrentUser().getDisplayName();
         String UID = firebaseAuth.getCurrentUser().getUid();
+        String DeviceToken = FirebaseInstanceId.getInstance().getToken();
         User user = new User();
         user.setUid(UID);
+        user.setToken(DeviceToken);
         user.setEmail(email);
         user.setFullname(nombre);
         user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
@@ -275,8 +280,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this,"Inicio de Sesión Exitoso", Toast.LENGTH_SHORT).show();
-                            goMainActivity();
+
+                            String online_user_id = firebaseAuth.getCurrentUser().getUid();
+                            String DeviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                            users.child(online_user_id).child("device_token").setValue(DeviceToken)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(LoginActivity.this,"Inicio de Sesión Exitoso", Toast.LENGTH_SHORT).show();
+                                    goMainActivity();
+                                }
+                            });
+
                         }else{
                             Toast.makeText(LoginActivity.this,"Error en Inicio de Sesion", Toast.LENGTH_SHORT).show();
                         }

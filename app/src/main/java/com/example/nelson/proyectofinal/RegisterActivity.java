@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -100,9 +101,11 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
 
+                                String DeviceToken = FirebaseInstanceId.getInstance().getToken();
                                 currentUserID = firebaseAuth.getCurrentUser().getUid();
 
                                 User user = new User();
+                                user.setToken(DeviceToken);
                                 user.setUid(currentUserID);
                                 user.setEmail(email);
                                 user.setFullname(name);
