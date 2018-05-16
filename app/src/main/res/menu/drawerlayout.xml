@@ -15,9 +15,9 @@
     </item>
 
     <item
-        android:id="@+id/find_friends"
+        android:id="@+id/places_nearby"
         android:icon="@drawable/find_people"
-        android:title="Find Friends">
+        android:title="Places Nearby">
     </item>
 
     <item

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nelson.proyectofinal.Model.Friends;
@@ -59,6 +60,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String userName =dataSnapshot.child("fullname").getValue().toString();
                 String userImage = dataSnapshot.child("profileimage").getValue().toString();
+
+                if (dataSnapshot.hasChild("online")){
+                    Boolean online_status = (boolean) dataSnapshot.child("online").getValue();
+                    holder.setUserOnline(online_status);
+                }
 
                 holder.setUsername(userName);
                 holder.setImage(userImage);
@@ -129,6 +135,20 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
                             Picasso.get().load(userImage).into(image);
                         }
                     });
+        }
+
+        public void setUserOnline(Boolean online_status) {
+
+            ImageView onlineStatusView = (ImageView) mView.findViewById(R.id.online_status);
+            ImageView offlineStatusView = (ImageView) mView.findViewById(R.id.offline_status);
+
+            if (online_status == true){
+                onlineStatusView.setVisibility(View.VISIBLE);
+                offlineStatusView.setVisibility(View.INVISIBLE);
+            }else{
+                onlineStatusView.setVisibility(View.INVISIBLE);
+                offlineStatusView.setVisibility(View.VISIBLE);
+            }
         }
     }
 

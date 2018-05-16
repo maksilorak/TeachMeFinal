@@ -151,6 +151,11 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
+
+
+
+
+
         declineFriendRequest.setVisibility(View.INVISIBLE);
         declineFriendRequest.setEnabled(false);
 

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         inicializar();
 
         currenUserID = firebaseAuth.getCurrentUser().getUid();
-        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        //usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
 
         // Tabs for Main Activity
@@ -132,9 +132,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             case R.id.logout:
                 cerrarSesion();
+
+            case R.id.places_nearby:
+                goMaps();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goMaps() {
+        Intent maps = new Intent(MainActivity.this,MapsActivity.class);
+        startActivity(maps);
+        finish();
     }
 
     private void sendUserToPostActivity() {
@@ -181,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onStop() {
         super.onStop();
         firebaseAuth.removeAuthStateListener(authStateListener);
+        usersRef.child("online").setValue(false);
 
     }
 
@@ -224,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 else{
 
                     Log.d("FirebaseUser: ", "Usuario Logueado");
+
+                    usersRef = FirebaseDatabase.getInstance().getReference().child("Users")
+                            .child(currenUserID);
+
+                    usersRef.child("online").setValue(true);
                 }
             }
         };
