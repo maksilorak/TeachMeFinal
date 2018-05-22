@@ -55,8 +55,6 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View myMainView= inflater.inflate(R.layout.fragment_friends, container, false);
-
-
         friendsLists = (RecyclerView) myMainView.findViewById(R.id.friends_result_list);
         friendsLists.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -84,7 +82,7 @@ public class FriendsFragment extends Fragment {
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         Friends amigos = snapshot.getValue(Friends.class);
                         listaAmigos.add(amigos);
-                        //Log.d("Users id","ID: "+amigos.getUid());
+                        Log.d("Friends ID","ID: "+amigos.getID_Friend());
                     }
                     adapterAmigos.notifyDataSetChanged();
                 }
@@ -95,7 +93,6 @@ public class FriendsFragment extends Fragment {
 
             }
         });
-
 
         return myMainView;
     }

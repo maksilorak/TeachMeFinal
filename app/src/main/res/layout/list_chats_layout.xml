@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardeview"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:background="@drawable/requests_background"
@@ -25,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/photo_search"
+                android:id="@+id/photo_chat"
                 android:scaleType="centerCrop"
                 android:layout_marginStart="4dp"
                 android:src="@drawable/profile"
@@ -37,19 +34,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <RelativeLayout
 
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="8dp"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold"
-                    android:id="@+id/name_search"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito_semibold"
-                    android:text="Janier Lol"
-                    android:textColor="#555555"
-                    android:textSize="16sp" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:textAlignment="textStart"
+                        android:textStyle="bold"
+                        android:id="@+id/chat_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_semibold"
+                        android:text="Janier Lol"
+                        android:textColor="#555555"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -59,31 +63,12 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/status_search"
+                        android:id="@+id/status_chat"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Hi there"
-                        android:textColor="#999999" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="5dp"
-                    android:padding="2dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/user_id"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Hi there"
-                        android:visibility="gone"
                         android:textColor="#999999" />
 
                 </LinearLayout>
@@ -91,6 +76,5 @@
 
         </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

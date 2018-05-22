@@ -1,60 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary"
+    android:gravity="center"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+
     tools:context=".ProfileActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="276dp"
-        android:layout_height="206dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/profile" />
-
-    <TextView
-        android:id="@+id/profile_fullname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="260dp"
-        android:text="Name" />
-
-    <TextView
-        android:id="@+id/profile_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="215dp"
-        android:text="status" />
 
 
+       <LinearLayout
+           android:gravity="center"
+           android:id="@+id/foto_usuario"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/profile_send_req_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:text="Friend Request" />
+           <de.hdodenhof.circleimageview.CircleImageView
 
-    <Button
-        android:id="@+id/profile_decline_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="44dp"
-        android:text="Decline Friend Request" />
+               android:id="@+id/profile_image"
+               android:layout_width="276dp"
+               android:layout_height="206dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginBottom="20dp"
+               android:src="@drawable/profile" />
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_marginTop="30dp"
+           android:padding="10dp"
+           android:id="@+id/datos_usuario"
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:textColor="@color/white"
+               android:textSize="26sp"
+               android:gravity="center"
+               android:id="@+id/profile_fullname"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Name of the user" />
+
+           <TextView
+               android:layout_marginTop="10dp"
+               android:gravity="center"
+               android:textColor="@color/white"
+               android:textSize="17sp"
+               android:id="@+id/profile_status"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Status of the user" />
 
 
-</RelativeLayout>
+       </LinearLayout>
+
+
+       <LinearLayout
+           android:layout_marginTop="30dp"
+           android:gravity="center"
+           android:id="@+id/botones"
+           android:layout_below="@+id/datos_usuario"
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <Button
+               android:id="@+id/profile_send_req_btn"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Send Friend Request" />
+
+           <Button
+               android:id="@+id/profile_decline_btn"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:visibility="gone"
+               android:text="Cancel Friend Request" />
+
+       </LinearLayout>
+
+
+</LinearLayout>

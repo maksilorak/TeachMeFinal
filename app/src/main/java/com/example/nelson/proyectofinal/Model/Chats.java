@@ -2,65 +2,38 @@ package com.example.nelson.proyectofinal.Model;
 
 public class Chats {
 
-    private String messageUid, messageText, messageUserName, messageDate, messageTime, messageProfileImage;
-
-    public Chats(String messageUid, String messageText, String messageUserName, String messageDate, String messageTime, String messageProfileImage) {
-        this.messageUid = messageUid;
-        this.messageText = messageText;
-        this.messageUserName = messageUserName;
-        this.messageDate = messageDate;
-        this.messageTime = messageTime;
-        this.messageProfileImage = messageProfileImage;
-    }
+    private String isYourFriend, ID_Friend,date;
 
     public Chats() {
     }
 
-    public String getMessageUid() {
-        return messageUid;
+    public Chats(String isYourFriend, String ID_Friend, String date) {
+        this.isYourFriend = isYourFriend;
+        this.ID_Friend = ID_Friend;
+        this.date = date;
     }
 
-    public void setMessageUid(String messageUid) {
-        this.messageUid = messageUid;
+    public String getIsYourFriend() {
+        return isYourFriend;
     }
 
-    public String getMessageText() {
-        return messageText;
+    public void setIsYourFriend(String isYourFriend) {
+        this.isYourFriend = isYourFriend;
     }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
+    public String getID_Friend() {
+        return ID_Friend;
     }
 
-    public String getMessageUserName() {
-        return messageUserName;
+    public void setID_Friend(String ID_Friend) {
+        this.ID_Friend = ID_Friend;
     }
 
-    public void setMessageUserName(String messageUserName) {
-        this.messageUserName = messageUserName;
+    public String getDate() {
+        return date;
     }
 
-    public String getMessageDate() {
-        return messageDate;
-    }
-
-    public void setMessageDate(String messageDate) {
-        this.messageDate = messageDate;
-    }
-
-    public String getMessageTime() {
-        return messageTime;
-    }
-
-    public void setMessageTime(String messageTime) {
-        this.messageTime = messageTime;
-    }
-
-    public String getMessageProfileImage() {
-        return messageProfileImage;
-    }
-
-    public void setMessageProfileImage(String messageProfileImage) {
-        this.messageProfileImage = messageProfileImage;
+    public void setDate(String date) {
+        this.date = date;
     }
 }

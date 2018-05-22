@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("TeachMe");
+        //getSupportActionBar().setTitle("TeachMe");
 
         //addNewPostButton = (ImageButton) findViewById(R.id.add_new_post_button);
 
@@ -127,14 +128,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.add_post:
-                goToPost();
+            case R.id.settings:
+                sendUserToSettingsActivity();
 
             case R.id.logout:
                 cerrarSesion();
 
-            case R.id.places_nearby:
-                goMaps();
+
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -160,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void goToProfile() {
         Intent profile = new Intent(MainActivity.this,ProfileActivity.class);
+        profile.putExtra("user",currenUserID);
         startActivity(profile);
         finish();
     }
@@ -177,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void sendUserToSettingsActivity() {
         Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
         startActivity(settings);
-        //finish();
+        finish();
     }
 
     private void goSetup() {
@@ -189,8 +192,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onStop() {
         super.onStop();
+        usersRef.child("online").setValue("false");
         firebaseAuth.removeAuthStateListener(authStateListener);
-        usersRef.child("online").setValue(false);
+
+
+
 
     }
 
@@ -238,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     usersRef = FirebaseDatabase.getInstance().getReference().child("Users")
                             .child(currenUserID);
 
-                    usersRef.child("online").setValue(true);
+                    usersRef.child("online").setValue("true");
                 }
             }
         };
@@ -256,12 +262,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void cerrarSesion() {
+
+
+        usersRef.child("online").setValue("false");
+
         firebaseAuth.signOut();
+
         if (Auth.GoogleSignInApi != null){
             Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
                 @Override
                 public void onResult(@NonNull Status status) {
                     if (status.isSuccess()){
+                        usersRef.child("online").setValue("false");
                         goLoginActivity();
                     }
                 }
@@ -270,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         if (LoginManager.getInstance() != null){
             LoginManager.getInstance().logOut();
+            usersRef.child("online").setValue("false");
         }
     }
 

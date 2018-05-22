@@ -5,6 +5,9 @@ public class User{
     private String country, dob,fullname,gender,status,username,relationshipstatus,profileimage, email,uid,device_token;
 
 
+    public User() {
+    }
+
     public User(String country, String dob, String fullname, String gender, String status, String username, String relationshipstatus, String profileimage, String email, String uid, String device_token) {
         this.country = country;
         this.dob = dob;
@@ -17,20 +20,9 @@ public class User{
         this.email = email;
         this.uid = uid;
         this.device_token = device_token;
+
     }
 
-    public User() {
-    }
-
-
-
-    public String getToken() {
-        return device_token;
-    }
-
-    public void setToken(String device_token) {
-        this.device_token = device_token;
-    }
 
     public String getCountry() {
         return country;
@@ -111,4 +103,14 @@ public class User{
     public void setUid(String uid) {
         this.uid = uid;
     }
+
+    public String getDevice_token() {
+        return device_token;
+    }
+
+    public void setDevice_token(String device_token) {
+        this.device_token = device_token;
+    }
+
+
 }

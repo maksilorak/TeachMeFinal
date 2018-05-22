@@ -79,7 +79,7 @@ public class UsersFragment extends Fragment {
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         User usuarios = snapshot.getValue(User.class);
                         listaUsuarios.add(usuarios);
-                        Log.d("Users id","ID: "+usuarios.getUid());
+                        //Log.d("Users id","ID: "+usuarios.getUid());
                     }
                     adapterUsuarios.notifyDataSetChanged();
                 }

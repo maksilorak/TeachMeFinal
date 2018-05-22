@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nelson.proyectofinal.Model.User;
@@ -46,6 +47,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     @Override
     public void onBindViewHolder(@NonNull final UsersViewHolder holder, final int position) {
 
+
+        //Llena los datos de todos los usuarios
         holder.username.setText(listaUsuarios.get(position).getFullname());
         holder.status_search.setText(listaUsuarios.get(position).getStatus());
         //With load of the picture in offline conditions
@@ -62,7 +65,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                     }
                 });
         holder.UID.setText(listaUsuarios.get(position).getUid());
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+
+        // cuando se presiona se un usuario en particular
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent perfil = new Intent(context, ProfileActivity.class);
@@ -84,7 +89,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
 
         TextView username,status_search,UID;
         CircleImageView image;
-        CardView cardView;
+
 
         public UsersViewHolder(View itemView) {
             super(itemView);
@@ -92,7 +97,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             username = (TextView) itemView.findViewById(R.id.name_search);
             status_search = (TextView) itemView.findViewById(R.id.status_search);
             image = (CircleImageView) itemView.findViewById(R.id.photo_search);
-            cardView = (CardView) itemView.findViewById(R.id.cardeview);
             UID = (TextView) itemView.findViewById(R.id.user_id);
         }
     }

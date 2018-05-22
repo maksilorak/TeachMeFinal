@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 currentUserID = firebaseAuth.getCurrentUser().getUid();
 
                                 User user = new User();
-                                user.setToken(DeviceToken);
+                                user.setDevice_token(DeviceToken);
                                 user.setUid(currentUserID);
                                 user.setEmail(email);
                                 user.setFullname(name);
@@ -115,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setDob("12-12-1900");
                                 user.setGender("none");
                                 user.setRelationshipstatus("Single");
-                                user.setStatus("Hey There.  I'm using Teach Me to find people qho can teach me a language");
+                                user.setStatus("Hey There.  I'm using Teach Me to find people who can teach me a language");
 
 
                                 myRef.child(currentUserID)
