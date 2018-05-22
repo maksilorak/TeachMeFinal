@@ -1,6 +1,7 @@
 package com.example.nelson.proyectofinal;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -49,8 +50,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 
@@ -204,18 +209,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         String nombre =firebaseAuth.getCurrentUser().getDisplayName();
         String UID = firebaseAuth.getCurrentUser().getUid();
         String DeviceToken = FirebaseInstanceId.getInstance().getToken();
+        String locale = getResources().getConfiguration().locale.getCountry();
+
+
+
         User user = new User();
         user.setUid(UID);
-        user.setToken(DeviceToken);
+        user.setDevice_token(DeviceToken);
         user.setEmail(email);
         user.setFullname(nombre);
         user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-        user.setCountry("Colombia");
-        user.setUsername("none");
+        user.setCountry(locale);
+        user.setUsername(nombre);
         user.setDob("12-12-1900");
-        user.setGender("none");
+        user.setGender("MALE");
         user.setRelationshipstatus("Single");
-        user.setStatus("Hi there.  I'm a new User");
+        user.setStatus("Hi there.  I'm a new User wanting to contact teachers for learning a new language");
+
 
 
         users.child(UID)
