@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.logout:
                 cerrarSesion();
 
-
+            case R.id.profile:
+                goToProfile();
 
 
         }
@@ -161,10 +162,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void goToProfile() {
-        Intent profile = new Intent(MainActivity.this,ProfileActivity.class);
-        profile.putExtra("user",currenUserID);
+        Intent profile = new Intent(MainActivity.this,ProfileUI.class);
         startActivity(profile);
-        finish();
+
     }
 
     private void sendUserToMessageActivity() {

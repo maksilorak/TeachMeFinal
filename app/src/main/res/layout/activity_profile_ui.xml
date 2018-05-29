@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileUI">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/profileui_photo"
+            android:src="@drawable/profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:gravity="center"
+                android:id="@+id/profileui_fullname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name of the user" />
+
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:id="@+id/profileui_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status of the user" />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="start"
+                    android:src="@drawable/ic_email"
+                    android:id="@+id/profileui_mail_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:id="@+id/profileui_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="Email" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="start"
+                    android:src="@drawable/ic_group"
+                    android:id="@+id/profileui_relationship_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:id="@+id/profileui_relationship_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="Relationship Status" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="start"
+                    android:src="@drawable/ic_cake"
+                    android:id="@+id/profileui_dob_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:id="@+id/profileui_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="Birthday" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="start"
+                    android:src="@drawable/ic_gender"
+                    android:id="@+id/profileui_gender_icon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:id="@+id/profileui_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="Gender" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
