@@ -73,7 +73,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private RelativeLayout rootLayout;
     private SignInButton btnSignInGoogle;
     private LoginButton btnSignInFacebook;
-
+    private DatabaseReference usersReference;
+    String UID ;
+    String email ;
+    String nombre ;
+    String DeviceToken ;
+    String locale;
 
 
 
@@ -204,38 +209,79 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void getUserData(){
+        usersReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        String email = firebaseAuth.getCurrentUser().getEmail();
-        String nombre =firebaseAuth.getCurrentUser().getDisplayName();
-        String UID = firebaseAuth.getCurrentUser().getUid();
-        String DeviceToken = FirebaseInstanceId.getInstance().getToken();
-        String locale = getResources().getConfiguration().locale.getCountry();
-
-
-
-        User user = new User();
-        user.setUid(UID);
-        user.setDevice_token(DeviceToken);
-        user.setEmail(email);
-        user.setFullname(nombre);
-        user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-        user.setCountry(locale);
-        user.setUsername(nombre);
-        user.setDob("12-12-1900");
-        user.setGender("MALE");
-        user.setRelationshipstatus("Single");
-        user.setStatus("Hi there.  I'm a new User wanting to contact teachers for learning a new language");
+        UID = firebaseAuth.getCurrentUser().getUid();
+        email = firebaseAuth.getCurrentUser().getEmail();
+        nombre =firebaseAuth.getCurrentUser().getDisplayName();
+        DeviceToken = FirebaseInstanceId.getInstance().getToken();
+        locale = getResources().getConfiguration().locale.getCountry();
 
 
+        usersReference.child(UID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String image = dataSnapshot.child("profileimage").getValue().toString();
+                    String dob = dataSnapshot.child("dob").getValue().toString();
+                    String country = dataSnapshot.child("country").getValue().toString();
+                    String gender = dataSnapshot.child("gender").getValue().toString();
+                    String relationshipstatus = dataSnapshot.child("relationshipstatus").getValue().toString();
+                    String status = dataSnapshot.child("status").getValue().toString();
+                    String username = dataSnapshot.child("username").getValue().toString();
+                    String languages = dataSnapshot.child("languages").getValue().toString();
 
-        users.child(UID)
-                .setValue(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(LoginActivity.this,"Datos Usuario Actualizados", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+                    User user = new User();
+                    user.setUid(UID);
+                    user.setDevice_token(DeviceToken);
+                    user.setEmail(email);
+                    user.setFullname(nombre);
+                    user.setProfileimage(image);
+                    user.setCountry(country);
+                    user.setUsername(username);
+                    user.setDob(dob);
+                    user.setGender(gender);
+                    user.setRelationshipstatus(relationshipstatus);
+                    user.setStatus(status);
+                    user.setLanguages(languages);
+                }else
+                {
+
+
+                    User user = new User();
+                    user.setUid(UID);
+                    user.setDevice_token(DeviceToken);
+                    user.setEmail(email);
+                    user.setFullname(nombre);
+                    user.setProfileimage(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                    user.setCountry(locale);
+                    user.setUsername(nombre);
+                    user.setDob("12-12-1900");
+                    user.setGender("MALE");
+                    user.setRelationshipstatus("Single");
+                    user.setStatus("Hi there.  I'm a new User wanting to contact teachers for learning a new language");
+                    user.setLanguages("None");
+
+
+
+                    users.child(UID)
+                            .setValue(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(LoginActivity.this,"Datos Usuario Actualizados", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void goMainActivity() {

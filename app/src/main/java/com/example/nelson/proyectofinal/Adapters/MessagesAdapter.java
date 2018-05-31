@@ -15,8 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>{
 
     private ArrayList<Messages> usersMessagesList;
@@ -45,12 +43,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         String fromUserId = messages.getFrom();
 
         if (fromUserId.equals(messageSenderID)){
-            holder.messageText.setBackgroundResource(R.drawable.message_background_two);
-            holder.messageText.setTextColor(Color.BLACK);
+            holder.messageText.setBackgroundResource(R.drawable.my_message);
+            //holder.messageText.setTextColor(Color.BLACK);
             holder.messageText.setGravity(Gravity.RIGHT);
         }else{
-            holder.messageText.setBackgroundResource(R.drawable.message_text_background);
-            holder.messageText.setTextColor(Color.CYAN);
+            holder.messageText.setBackgroundResource(R.drawable.their_message);
+            holder.messageText.setTextColor(Color.MAGENTA);
             holder.messageText.setGravity(Gravity.LEFT);
         }
 
@@ -67,6 +65,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         public TextView messageText;
+        public TextView theirMessage;
         //public CircleImageView userProfileImage;
 
         public MessageViewHolder(View itemView) {
@@ -74,6 +73,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
             messageText = (TextView) itemView.findViewById(R.id.message_text);
            // userProfileImage =(CircleImageView) itemView.findViewById(R.id.message_profile_image);
+            theirMessage = (TextView) itemView.findViewById(R.id.their_message);
         }
     }
 }

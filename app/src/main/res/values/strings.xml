@@ -26,5 +26,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="hint_status">Status</string>
+    <string name="change_profile">Update Profile</string>
+    <string name="hint_languages_learning">Languages you learn</string>
 
 </resources>

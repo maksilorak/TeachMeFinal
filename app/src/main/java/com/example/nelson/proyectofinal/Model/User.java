@@ -2,13 +2,12 @@ package com.example.nelson.proyectofinal.Model;
 
 
 public class User{
-    private String country, dob,fullname,gender,status,username,relationshipstatus,profileimage, email,uid,device_token;
-
+    private String country, dob,fullname,gender,status,username,relationshipstatus,profileimage, email,uid,device_token,languages;
 
     public User() {
     }
 
-    public User(String country, String dob, String fullname, String gender, String status, String username, String relationshipstatus, String profileimage, String email, String uid, String device_token) {
+    public User(String country, String dob, String fullname, String gender, String status, String username, String relationshipstatus, String profileimage, String email, String uid, String device_token, String languages) {
         this.country = country;
         this.dob = dob;
         this.fullname = fullname;
@@ -20,9 +19,8 @@ public class User{
         this.email = email;
         this.uid = uid;
         this.device_token = device_token;
-
+        this.languages = languages;
     }
-
 
     public String getCountry() {
         return country;
@@ -112,5 +110,11 @@ public class User{
         this.device_token = device_token;
     }
 
+    public String getLanguages() {
+        return languages;
+    }
 
+    public void setLanguages(String languages) {
+        this.languages = languages;
+    }
 }

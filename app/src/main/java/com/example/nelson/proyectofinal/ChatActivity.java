@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
 
         FetchMessages();
 
-        chatToolbar = (Toolbar) findViewById(R.id.chat_bar_layout);
+       /* chatToolbar = (Toolbar) findViewById(R.id.chat_bar_layout);
         setSupportActionBar(chatToolbar);
         ActionBar actionBar =getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -99,13 +99,13 @@ public class ChatActivity extends AppCompatActivity {
                 this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View action_bar = layoutInflater.inflate(R.layout.chat_custom_bar,null);
-        actionBar.setCustomView(action_bar);
+        actionBar.setCustomView(action_bar); */
 
         userNameTitle = (TextView) findViewById(R.id.custom_profile_name);
         userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
         userChatProfileImage = (CircleImageView) findViewById(R.id.custom_profile_image);
         sendMessageButton = (ImageButton) findViewById(R.id.send_message);
-        selectImageButton = (ImageButton) findViewById(R.id.select_image);
+        //selectImageButton = (ImageButton) findViewById(R.id.select_image);
         inputMessageText = (EditText) findViewById(R.id.input_message);
 
         userNameTitle.setText(messageReceiverName);
@@ -144,7 +144,7 @@ public class ChatActivity extends AppCompatActivity {
                     //String lastSeenDisplayTime = getTime.getTimeAgo(last_seen,getApplicationContext()).toString();
                     //Log.d("Last seen",lastSeenDisplayTime+"ago");
 
-                    userLastSeen.setText("false");
+                    userLastSeen.setText("Offline");
                 }
 
             }

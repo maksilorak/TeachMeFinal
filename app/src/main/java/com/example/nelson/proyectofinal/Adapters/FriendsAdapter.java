@@ -64,7 +64,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
 
 
         final String list_user_id = listaAmigos.get(position).getID_Friend();
-        holder.setDate("Friends Since: \n"+listaAmigos.get(position).getDate());
+        holder.setDate("Friends Since: "+listaAmigos.get(position).getDate());
 
         usersReference.child(list_user_id).addValueEventListener(new ValueEventListener() {
             @Override

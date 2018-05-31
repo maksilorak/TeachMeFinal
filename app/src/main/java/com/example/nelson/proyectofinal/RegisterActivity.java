@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference myRef;
 
     private Button btnSignUp;
-     private EditText nameText, emailText, passwordText,repeatPasswordText;
+     private EditText nameText, emailText, passwordText,repeatPasswordText,languagesText;
     private TextView loginLink;
 
     String currentUserID;
@@ -46,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
         repeatPasswordText = (EditText) findViewById(R.id.input_repeat_password);
+        languagesText = (EditText) findViewById(R.id.input_languages);
         loginLink = (TextView) findViewById(R.id.link_login);
 
         // firebase instance
@@ -90,6 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
         final String name = nameText.getText().toString();
+        final String languages = languagesText.getText().toString();
 
 
         if (!validate()) {
@@ -116,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 user.setGender("none");
                                 user.setRelationshipstatus("Single");
                                 user.setStatus("Hey There.  I'm using Teach Me to find people who can teach me a language");
+                                user.setLanguages(languages);
 
 
                                 myRef.child(currentUserID)
@@ -160,6 +163,15 @@ public class RegisterActivity extends AppCompatActivity {
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
         String repeatPassword =repeatPasswordText.getText().toString();
+        String languages = languagesText.getText().toString();
+
+        if (languages.isEmpty() || languages.length() < 3) {
+            languagesText.setError("at least 3 characters");
+            valid = false;
+        } else {
+            languagesText.setError(null);
+        }
+
 
         if (name.isEmpty() || name.length() < 3) {
             nameText.setError("at least 3 characters");

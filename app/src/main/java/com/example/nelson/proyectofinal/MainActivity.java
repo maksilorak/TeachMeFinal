@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.settings:
-                sendUserToSettingsActivity();
 
             case R.id.logout:
                 cerrarSesion();
@@ -163,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void goToProfile() {
         Intent profile = new Intent(MainActivity.this,ProfileUI.class);
+        profile.putExtra("user",currenUserID);
         startActivity(profile);
 
     }
@@ -177,11 +176,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
        finish();
     }
 
-    private void sendUserToSettingsActivity() {
-        Intent settings = new Intent(MainActivity.this,SettingsActivity.class);
-        startActivity(settings);
-        finish();
-    }
+
 
     private void goSetup() {
         Intent setup = new Intent(MainActivity.this,SetupActivity.class);

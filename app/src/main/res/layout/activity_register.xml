@@ -71,6 +71,19 @@
                 android:hint="@string/hint_repeat_contrasena"/>
         </android.support.design.widget.TextInputLayout>
 
+        <!-- Languages -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_languages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:hint="@string/hint_languages_learning"/>
+        </android.support.design.widget.TextInputLayout>
+
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton

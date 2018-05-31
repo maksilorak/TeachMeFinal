@@ -52,14 +52,14 @@
                         android:fontFamily="@font/nunito_semibold"
                         android:text="Janier Lol"
                         android:textColor="#555555"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                     <ImageView
                         android:layout_toRightOf="@+id/name_friend"
                         android:layout_marginTop="5dp"
                         android:visibility="invisible"
                         android:id="@+id/online_status"
-                        android:src="@mipmap/online"
+                        android:src="@drawable/online"
                         android:layout_width="15dp"
                         android:layout_height="15dp" />
 
@@ -69,9 +69,9 @@
                         android:layout_marginRight="5dp"
                         android:visibility="invisible"
                         android:id="@+id/offline_status"
-                        android:src="@mipmap/offline"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp" />
+                        android:src="@drawable/offline"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
 
                 </RelativeLayout>
 

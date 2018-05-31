@@ -6,18 +6,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@android:color/white"
     tools:context=".ChatActivity">
 
-        <include
-            android:id="@+id/chat_bar_layout"
-            layout="@layout/chat_bar_app_layout">
+    <LinearLayout
+        android:background="@color/colorPrimary"
+        android:id="@+id/user_chat_identifier"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        </include>
+
+        <LinearLayout
+            android:paddingTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="start"
+                    android:layout_gravity="center"
+                    android:id="@+id/custom_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:text="Display UserName"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:gravity="start"
+                    android:layout_gravity="center"
+                    android:id="@+id/custom_user_last_seen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="Last Seen"
+                    android:textColor="@android:color/background_light"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+         <LinearLayout
+             android:gravity="center"
+             android:layout_width="0dp"
+             android:layout_weight="1"
+             android:layout_height="match_parent">
+             <de.hdodenhof.circleimageview.CircleImageView
+                 android:layout_marginTop="3dp"
+                 android:layout_gravity="end"
+                 android:id="@+id/custom_profile_image"
+                 android:layout_width="40dp"
+                 android:layout_weight="1"
+                 android:layout_height="40dp"
+                 android:src="@drawable/find_people" />
+
+         </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
 
     <RelativeLayout
-        android:layout_below="@+id/chat_bar_layout"
+        android:layout_below="@+id/user_chat_identifier"
         android:layout_above="@+id/message_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -38,17 +99,6 @@
         android:background="@android:color/background_light"
         >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/select_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="5dp"
-                android:src="@drawable/ic_select_image_to_send" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -62,7 +112,7 @@
                 android:ems="10"
                 android:hint="Write a message"
                 android:inputType="textMultiLine"
-                android:padding="5dp" />
+                android:paddingStart="5dp" />
         </LinearLayout>
 
         <LinearLayout

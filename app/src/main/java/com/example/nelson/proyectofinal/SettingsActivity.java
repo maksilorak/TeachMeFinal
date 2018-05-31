@@ -1,6 +1,7 @@
 package com.example.nelson.proyectofinal;
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.InstrumentationInfo;
 import android.net.Uri;
@@ -8,8 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,21 +34,26 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener{
 
     private Toolbar mToolbar;
 
-    private EditText userName,userProfileName,userStatus, userCountry,userGender,userRelation, userDOB;
+    private EditText userLanguages,userProfileName,userStatus, userCountry,userGender,userRelation, userDOB;
     private Button updateAccountsSettingsButton;
     private CircleImageView userprofileImage;
 
     private DatabaseReference settingsUserReference;
     private FirebaseAuth mAuth;
     private StorageReference usrProfileImageRef;
+
+    Calendar calendario;
+    int dia, mes, anno;
+    DatePickerDialog seleccion;
 
     private String currentUserID;
 
@@ -56,7 +65,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        currentUserID = getIntent().getExtras().get("user").toString();
+       // currentUserID = mAuth.getCurrentUser().getUid();
         settingsUserReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
         settingsUserReference.keepSynced(true);
         usrProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
@@ -67,13 +77,14 @@ public class SettingsActivity extends AppCompatActivity {
         //getSupportActionBar().setDisplayShowHomeEnabled();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        userName = (EditText) findViewById(R.id.settings_username);
+        userLanguages = (EditText) findViewById(R.id.settings_languages);
         userProfileName = (EditText) findViewById(R.id.settings_profilename);
         userStatus = (EditText) findViewById(R.id.settings_status);
         userCountry = (EditText) findViewById(R.id.settings_profile_country);
         userGender = (EditText) findViewById(R.id.settings_profile_gender);
         userRelation = (EditText) findViewById(R.id.settings_profile_relationship_status);
         userDOB = (EditText) findViewById(R.id.settings_profile_date_birth);
+        userDOB.setInputType(InputType.TYPE_NULL);
 
         userprofileImage = (CircleImageView) findViewById(R.id.settings_profile_image);
 
@@ -86,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     final String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-                    String myProfileUsername = dataSnapshot.child("username").getValue().toString();
+                    String myProfileLanguages = dataSnapshot.child("languages").getValue().toString();
                     String myProfileName = dataSnapshot.child("fullname").getValue().toString();
                     String myProfileStatus = dataSnapshot.child("status").getValue().toString();
                     String myProfileDOB = dataSnapshot.child("dob").getValue().toString();
@@ -106,7 +117,7 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     });
 
-                    userName.setText(myProfileUsername);
+                    userLanguages.setText(myProfileLanguages);
                     userProfileName.setText(myProfileName);
                     userStatus.setText(myProfileStatus);
                     userCountry.setText(myProfileCountry);
@@ -196,7 +207,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void validateAccountInfo() {
-        String username = userName.getText().toString();
+        String languagesUser = userLanguages.getText().toString();
         String profilename = userProfileName.getText().toString();
         String status = userStatus.getText().toString();
         String dob = userDOB.getText().toString();
@@ -204,8 +215,8 @@ public class SettingsActivity extends AppCompatActivity {
         String relation = userRelation.getText().toString();
         String country = userCountry.getText().toString();
 
-        if(username.isEmpty()){
-            userName.setError("Enter a valid username");
+        if(languagesUser.isEmpty()){
+            userLanguages.setError("Enter a valid Language");
         }
         else if (profilename.isEmpty()){
             userProfileName.setError("Enter a valid Profile Name");
@@ -231,13 +242,13 @@ public class SettingsActivity extends AppCompatActivity {
             userRelation.setError("Enter a valid Relationship Status");
         }
         else {
-            updateAccountInfo(username,profilename,status,dob,country,gender,relation);
+            updateAccountInfo(languagesUser,profilename,status,dob,country,gender,relation);
         }
     }
 
-    private void updateAccountInfo(String username, String profilename, String status, String dob, String country, String gender, String relation) {
+    private void updateAccountInfo(String languages, String profilename, String status, String dob, String country, String gender, String relation) {
         HashMap userMap = new HashMap();
-        userMap.put("username",username);
+        userMap.put("languages",languages);
         userMap.put("fullname",profilename);
         userMap.put("status",status);
         userMap.put("dob",dob);
@@ -261,5 +272,35 @@ public class SettingsActivity extends AppCompatActivity {
         Intent main = new Intent(SettingsActivity.this,MainActivity.class);
         startActivity(main);
         finish();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void getFecha(View view) {
+        calendario=Calendar.getInstance();
+        dia= calendario.get(Calendar.DAY_OF_MONTH);
+        mes= calendario.get(Calendar.MONTH);
+        anno= calendario.get(Calendar.YEAR);
+        seleccion= new DatePickerDialog(SettingsActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int mYear, int mMonth, int mDay) {
+                userDOB.setText(mDay+"/"+(mMonth+1)+"/"+mYear);
+            }
+        },dia,mes,anno);
+
+        seleccion.show();
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/grey"
+        android:background="@drawable/background_messages"
         android:id="@+id/chats_result_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
